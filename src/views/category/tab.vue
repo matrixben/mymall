@@ -1,0 +1,84 @@
+<template>
+  <me-scroll :scrollbar="false">
+    <ul class="tab">
+      <li class="tab-item"
+      :class="{'tab-item-active': item.id === curId}"
+      v-for="(item, index) in items" :key="index"
+      @click="switchTab(item.id, item.slogan)"
+      >{{item.name}}</li>
+    </ul>
+  </me-scroll>
+</template>
+
+<script>
+  import MeScroll from '@/base/scroll/index';
+  import { getCategoryContent } from '@/api/requests';
+
+  export default {
+    name: 'CategoryTab',
+    components: {
+      MeScroll
+    },
+    data() {
+        return {
+            curId: 0,
+            items: []
+        };
+    },
+    created() {
+        this.init();
+        //异步调用在执行方法时还没得到回调函数的数据
+        // this.switchTab(this.items[0].fatherId);
+    },
+    methods: {
+        init(){
+            getCategoryContent('ONE', 0).then(data => {
+                if (data){
+                    this.items = data;
+                    this.switchTab(this.items[0].id, this.items[0].slogan);
+                }
+            });
+        },
+        switchTab(id, slogan){
+            if (this.curId === id){
+                return;
+            }
+            this.curId = id;
+            this.$emit('switch-tab', id, slogan);
+        }
+    }
+  };
+</script>
+
+<style lang="scss" scoped>
+    @import "../../assets/scss/mixins";
+    
+    $tab-item-height: 46px;
+ 
+    .tab {
+     width: 100%;
+
+     &-item {
+       height: $tab-item-height;
+       background-color: #fff;
+       border-right: 1px solid $border-color;
+       border-bottom: 1px solid $border-color;
+       color: #080808;
+       font-size: $font-size-l;
+       font-weight: bold;
+       text-align: center;
+       line-height: $tab-item-height;
+       @include ellipsis();
+
+       &:last-child {
+         border-bottom: none;
+       }
+     }
+
+     &-item-active {
+       background: none;
+       border-right: none;
+       color: #f23030;
+     }
+    }
+</style>
