@@ -32,6 +32,10 @@ Vue.use(Empty);
 import { Rate } from 'vant';
 Vue.use(Rate);
 
+import { Checkbox, CheckboxGroup } from 'vant';
+Vue.use(Checkbox)
+   .use(CheckboxGroup);
+
 // 商品详情 - 底部按钮
 import { GoodsAction, GoodsActionIcon, GoodsActionButton } from 'vant';
 Vue.use(GoodsAction)

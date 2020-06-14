@@ -145,6 +145,7 @@ export default {
         },
         addCart() {
           // 判断是否重复商品
+          // 使用vuex?
           this.cartNum++;
           Toast('添加成功！');
         },

@@ -1,5 +1,5 @@
 <template>
-    <me-navbar class="header" title="商品详情">
+    <me-navbar class="header" title="购物车">
         <i class="iconfont icon-back" slot="left" @click="goBack"></i>
         <i class="iconfont icon-msg" slot="right"></i>
     </me-navbar>
@@ -9,7 +9,7 @@
 import MeNavbar from '@/base/navbar/index';
 
 export default {
-    name: 'ProductHeader',
+    name: 'CartHeader',
     components: {
         MeNavbar
     },

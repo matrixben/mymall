@@ -167,6 +167,34 @@ app.get('/item/detail/:id', function(req, res){
         }
     }));
 });
+// for parsing application/json
+app.use(express.json());
+// for parsing application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/cart/getitemsfromcart', function(req, res){
+    if (req.body.userId !== 'jason001'){
+        res.json('用户不存在');
+    }else {
+        res.json(Mock.mock({
+            'status': 200,
+            'errorMsg': null,
+            'data|3-6': [
+                {
+                    'itemId': /\w{5}-\d{3}/,
+                    'itemImgUrl': Random.image('550x250', '#4A7BF7', Random.string()),
+                    'itemName': Random.cword(5, 9),
+                    'specId': /\w{5}-\d{3}-spec/,
+                    'specName': Random.cword(3, 5),
+                    'counts': /\d{1}/,
+                    'priceNormal': Random.integer(1000, 10000),
+                    'priceDiscount': Random.integer(1000, 10000)
+                }
+            ]
+        }));
+    }
+    
+});
 
 app.listen('8088', () => {
     console.log('监听端口 8088');

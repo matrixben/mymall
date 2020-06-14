@@ -21,4 +21,12 @@ export const getSearchHotKeyword = () => myAjax(BASE_URL + 'home/searchHot');
 // 获取商品详情数据
 export const getProductDetail = (id) => myAjax(BASE_URL + 'item/detail/' + id);
 // 获取用户评价数据
-export const getUserComments = (id) => myAjax(BASE_URL + 'item/detail/comments/' + id);
+export const getUserComments = (id) => myAjax(BASE_URL + 'item/detail/comments/' + id, {'page':1,'pagesize':20});
+
+// 购物车页
+// 添加商品到购物车
+export const addItemToCart = (userId, cartItem) => myAjax(BASE_URL + 'cart/add',
+                                                          {'userId':userId,'ShoppingCartBO':cartItem},
+                                                          'POST');
+// 展示购物车中的商品
+export const showItemsInCart = (userId) => myAjax(BASE_URL+ 'cart/getitemsfromcart',{'userId':userId},'POST');
