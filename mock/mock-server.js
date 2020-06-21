@@ -179,16 +179,16 @@ app.post('/cart/getitemsfromcart', function(req, res){
         res.json(Mock.mock({
             'status': 200,
             'errorMsg': null,
-            'data|3-6': [
+            'data|2-3': [
                 {
                     'itemId': /\w{5}-\d{3}/,
                     'itemImgUrl': Random.image('550x250', '#4A7BF7', Random.string()),
-                    'itemName': Random.cword(5, 9),
+                    'itemName': /\w{5,9}/,
                     'specId': /\w{5}-\d{3}-spec/,
-                    'specName': Random.cword(3, 5),
+                    'specName': /\w{3,5}/,
                     'counts': /\d{1}/,
-                    'priceNormal': Random.integer(1000, 10000),
-                    'priceDiscount': Random.integer(1000, 10000)
+                    'priceNormal': /\d{2,4}/,
+                    'priceDiscount': /\d{2,4}/
                 }
             ]
         }));

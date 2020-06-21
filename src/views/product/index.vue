@@ -34,6 +34,7 @@
                   <van-cell title="保存方式" :value='itemParam.storageMethod' />
                   <van-cell title="品牌" :value='itemParam.brand' />
               </van-tab>
+              <!-- todo: 用户评论下拉后sticky无效并消失 -->
               <van-tab title="用户评价">
                   <van-empty description="没有评论" v-show='!itemComments.length' />
                   <li v-for="(comment) of itemComments" :key="comment.id">

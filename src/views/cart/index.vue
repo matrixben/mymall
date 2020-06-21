@@ -3,13 +3,13 @@
         <header class="g-header-container">
             <cart-header/>
         </header>
-        <div class="g-content-container">
-            <van-checkbox-group v-model="checkresult">
+        <me-scroll>
+            <van-checkbox-group v-model="checkresult" ref="checkboxGroup">
                 <ul class="cart-list">
                     <li class="cart-item"
                     v-for="(item, index) in cartItems"
                     :key="item.itemId"
-                    @click="toggle(index)">
+                    @click="toggle(index, $event)">
                         <van-checkbox :name="item.itemId" ref="checkboxes" />
                         <van-card
                           :num="item.counts"
@@ -28,7 +28,18 @@
                     </li>
                 </ul>
             </van-checkbox-group>
-        </div>
+            
+        </me-scroll>
+        <!-- 总金额和结算按钮栏 -->
+        <van-goods-action class="submitBtn">
+          <van-checkbox v-model="isAllChecked" @click="checkAll" />
+          <span>￥{{cartTotPrice}}</span>
+          <van-goods-action-button
+            type="danger"
+            text="立即购买"
+            @click="onBuyClicked"
+          />
+        </van-goods-action>
         <router-view></router-view>
     </div>
 </template>
@@ -36,17 +47,20 @@
 <script>
 import CartHeader from './header';
 import {showItemsInCart} from '@/api/requests';
+import MeScroll from '@/base/scroll/index';
 
 export default {
     name: 'Cart',
     components: {
         CartHeader,
+        MeScroll
     },
     data() {
         return {
             cartItems: [],
             cartTotPrice: 0,
-            checkresult: []
+            checkresult: [],
+            isAllChecked: false
         };
     },
     created() {
@@ -62,17 +76,41 @@ export default {
         calTotPrice() {
             let totPrice = 0;
             for (let item of this.checkresult) {
+                console.log(item);
                 totPrice += item.counts * item.priceDiscount;
             }
             this.cartTotPrice = totPrice;
         },
-        toggle(index) {
-            this.$refs.checkboxes[index].toggle();
+        toggle(index, e) {
+            if (e.target.nodeName === 'I'){
+                this.$refs.checkboxes[index].toggle();
+            }
             //this.calTotPrice();
-        }
+        },
+        checkAll(){
+            this.$refs.checkboxGroup.toggleAll();
+            //计算总金额并显示
+        },
+        onBuyClicked(){}
     }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+    @import "../../assets/scss/mixins";
+    
+    .cart {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        background-color: $bgc-theme;
+    }
+    
+    .submitBtn {
+        position: absolute;
+        z-index: $backtop-z-index;
+        width: 100%;
+        left: 0;
+        bottom: $tabbar-height;
+    }
 </style>

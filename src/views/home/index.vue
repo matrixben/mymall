@@ -25,8 +25,8 @@
 <script>
 import HomeHeader from './header';
 import HomeSlider from './slider';
-import MeScroll from '../../base/scroll/index';
-import MeBacktop from '../../base/backtop/index';
+import MeScroll from '@/base/scroll/index';
+import MeBacktop from '@/base/backtop/index';
 import HomeNav from './nav';
 import HomeRecommend from './recommend';
 
