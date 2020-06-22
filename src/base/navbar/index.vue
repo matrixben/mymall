@@ -33,7 +33,7 @@ export default {
     .mine-navbar {
         position: relative;
         @include flex-between();
-        height: 50px;
+        height: $navbar-height;
         background-color: white;
         
         &-left {

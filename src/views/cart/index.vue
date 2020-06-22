@@ -3,7 +3,7 @@
         <header class="g-header-container">
             <cart-header/>
         </header>
-        <me-scroll>
+        <me-scroll class="content-scroll">
             <van-checkbox-group v-model="checkresult" ref="checkboxGroup">
                 <ul class="cart-list">
                     <li class="cart-item"
@@ -31,9 +31,11 @@
             
         </me-scroll>
         <!-- 总金额和结算按钮栏 -->
-        <van-goods-action class="submitBtn">
-          <van-checkbox v-model="isAllChecked" @click="checkAll" />
-          <span>￥{{cartTotPrice}}</span>
+        <van-goods-action class="orderBtn">
+          <van-checkbox v-model="isAllChecked" @click="checkAll(isAllChecked)">
+              全选
+          </van-checkbox>
+          <span class="totalPrice">￥{{cartTotPrice}}</span>
           <van-goods-action-button
             type="danger"
             text="立即购买"
@@ -66,6 +68,17 @@ export default {
     created() {
         this.getCartItems('jason001');
     },
+    watch: {
+        checkresult: function(){
+            let totPrice = 0;
+            for(var i=0; i < this.cartItems.length; i++){
+                if (this.checkresult.indexOf(this.cartItems[i].itemId) > -1){
+                    totPrice += parseInt(this.cartItems[i].priceDiscount);
+                }
+            }
+            this.cartTotPrice = totPrice;
+        }
+    },
     methods: {
         async getCartItems(userId) {
             const data = await showItemsInCart(userId);
@@ -74,21 +87,16 @@ export default {
             }
         },
         calTotPrice() {
-            let totPrice = 0;
-            for (let item of this.checkresult) {
-                console.log(item);
-                totPrice += item.counts * item.priceDiscount;
-            }
-            this.cartTotPrice = totPrice;
         },
         toggle(index, e) {
+            //只有点击选择框才选中此商品
             if (e.target.nodeName === 'I'){
                 this.$refs.checkboxes[index].toggle();
             }
-            //this.calTotPrice();
+            // this.calTotPrice();
         },
-        checkAll(){
-            this.$refs.checkboxGroup.toggleAll();
+        checkAll(ac){
+            this.$refs.checkboxGroup.toggleAll(ac);
             //计算总金额并显示
         },
         onBuyClicked(){}
@@ -106,11 +114,21 @@ export default {
         background-color: $bgc-theme;
     }
     
-    .submitBtn {
+    .content-scroll {
+        top: $navbar-height;
+    }
+    
+    .orderBtn {
         position: absolute;
         z-index: $backtop-z-index;
         width: 100%;
         left: 0;
         bottom: $tabbar-height;
+    }
+    
+    .totalPrice {
+        font-size: 25px;
+        margin-left: 12px;
+        margin-right: 12px;
     }
 </style>
