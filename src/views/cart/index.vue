@@ -35,7 +35,7 @@
           <van-checkbox v-model="isAllChecked" @click="checkAll(isAllChecked)">
               全选
           </van-checkbox>
-          <span class="totalPrice">￥{{cartTotPrice}}</span>
+          <span class="totalPrice">￥{{ calTotPrice() }}</span>
           <van-goods-action-button
             type="danger"
             text="立即购买"
@@ -60,24 +60,12 @@ export default {
     data() {
         return {
             cartItems: [],
-            cartTotPrice: 0,
             checkresult: [],
             isAllChecked: false
         };
     },
     created() {
         this.getCartItems('jason001');
-    },
-    watch: {
-        checkresult: function(){
-            let totPrice = 0;
-            for(var i=0; i < this.cartItems.length; i++){
-                if (this.checkresult.indexOf(this.cartItems[i].itemId) > -1){
-                    totPrice += parseInt(this.cartItems[i].priceDiscount);
-                }
-            }
-            this.cartTotPrice = totPrice;
-        }
     },
     methods: {
         async getCartItems(userId) {
@@ -86,18 +74,23 @@ export default {
                 this.cartItems = data;
             }
         },
-        calTotPrice() {
+        calTotPrice: function() {
+            let totPrice = 0;
+            for(var i=0; i < this.cartItems.length; i++){
+                if (this.checkresult.indexOf(this.cartItems[i].itemId) > -1){
+                    totPrice += parseInt(this.cartItems[i].priceDiscount) * parseInt(this.cartItems[i].counts);
+                }
+            }
+            return totPrice;
         },
         toggle(index, e) {
             //只有点击选择框才选中此商品
             if (e.target.nodeName === 'I'){
                 this.$refs.checkboxes[index].toggle();
             }
-            // this.calTotPrice();
         },
         checkAll(ac){
             this.$refs.checkboxGroup.toggleAll(ac);
-            //计算总金额并显示
         },
         onBuyClicked(){}
     }
