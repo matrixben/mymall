@@ -13,8 +13,8 @@
             <i class="iconfont icon-cart"></i>
             <span>购物车</span>
         </router-link>
-        <router-link class="g-tabbar-item" to="/personal">
-            <i class="iconfont icon-personal"></i>
+        <router-link class="g-tabbar-item" to="/mine">
+            <i class="iconfont icon-mine"></i>
             <span>我的</span>
         </router-link>
     </div>

@@ -35,6 +35,16 @@ Vue.use(Rate);
 import { Checkbox, CheckboxGroup } from 'vant';
 Vue.use(Checkbox)
    .use(CheckboxGroup);
+   
+import { NavBar } from 'vant';
+Vue.use(NavBar);
+
+import { Grid, GridItem } from 'vant';
+Vue.use(Grid)
+   .use(GridItem);
+   
+import { Switch } from 'vant';
+Vue.use(Switch);
 
 // 商品详情 - 底部按钮
 import { GoodsAction, GoodsActionIcon, GoodsActionButton } from 'vant';

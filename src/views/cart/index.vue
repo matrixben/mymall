@@ -28,7 +28,7 @@
                     </li>
                 </ul>
             </van-checkbox-group>
-            
+            <!-- todo:点击商品弹出sku商品规格还是回到商品详情页 -->
         </me-scroll>
         <!-- 总金额和结算按钮栏 -->
         <van-goods-action class="orderBtn">

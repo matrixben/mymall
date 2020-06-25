@@ -27,9 +27,21 @@ const routes = [
         component: () => import('../views/cart/index.vue')
     },
     {
-        name: 'personal',
-        path: '/personal',
-        component: () => import('../views/personal/index.vue')
+        name: 'mine',
+        path: '/mine',
+        component: () => import('../views/mine/index.vue'),
+        children: [
+            {
+                name: 'profile',
+                path: 'profile',
+                component: () => import('../views/mine/children/profile.vue')
+            },
+            {
+                name: 'mysetting',
+                path: 'mysetting',
+                component: () => import('../views/mine/children/mysetting.vue')
+            }
+        ]
     },
     {
         name: 'search',
