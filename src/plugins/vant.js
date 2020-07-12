@@ -46,6 +46,12 @@ Vue.use(Grid)
 import { Switch } from 'vant';
 Vue.use(Switch);
 
+import { Field } from 'vant';
+Vue.use(Field);
+
+import { Form } from 'vant';
+Vue.use(Form);
+
 // 商品详情 - 底部按钮
 import { GoodsAction, GoodsActionIcon, GoodsActionButton } from 'vant';
 Vue.use(GoodsAction)

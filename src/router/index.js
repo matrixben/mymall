@@ -40,6 +40,16 @@ const routes = [
                 name: 'mysetting',
                 path: 'mysetting',
                 component: () => import('../views/mine/children/mysetting.vue')
+            },
+            {
+                name: 'login',
+                path: 'login',
+                component: () => import('../views/mine/login.vue')
+            },
+            {
+                name: 'register',
+                path: 'register',
+                component: () => import('../views/mine/register.vue')
             }
         ]
     },

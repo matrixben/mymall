@@ -30,3 +30,6 @@ export const addItemToCart = (userId, cartItem) => myAjax(BASE_URL + 'cart/add',
                                                           'POST');
 // 展示购物车中的商品
 export const showItemsInCart = (userId) => myAjax(BASE_URL+ 'cart/getitemsfromcart',{'userId':userId},'POST');
+
+// 检查用户名是否已存在
+export const usernameIsExist = (username) => myAjax(BASE_URL+ 'user/userisexist',{'username':username},'GET');

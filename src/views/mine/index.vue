@@ -11,7 +11,7 @@
         <!-- 参考ddbuy的个人主页样式 -->
         <van-cell-group>
           <van-cell value="个人主页" center 
-                    is-link :to="{name:'profile'}">
+                    is-link :to="{name:'login'}">
             <template slot="title">
               <!-- 已登录状态 -->
               <div class="personMsg"
@@ -38,11 +38,12 @@
           </van-cell>
         </van-cell-group>
         <van-grid>
-          <van-grid-item icon="photo-o" text="文字" />
-          <van-grid-item icon="photo-o" text="文字" />
-          <van-grid-item icon="photo-o" text="文字" />
-          <van-grid-item icon="photo-o" text="文字" />
+          <van-grid-item icon="photo-o" text="订单" />
+          <van-grid-item icon="photo-o" text="收藏" />
+          <van-grid-item icon="photo-o" text="常看" />
+          <van-grid-item icon="photo-o" text="最新" />
         </van-grid>
+        <van-divider>猜你喜欢</van-divider>
         <!-- 页面跳转时添加动画 -->
         <transition name="router-slider"
                     mode="out-in">
@@ -57,7 +58,7 @@ export default {
     name: 'Mine',
     data () {
       return {
-        token: true,
+        token: false,
         // 头像
         user_image: {
           login_icon: require('@/assets/img/mine/defaultImg.jpeg'),
