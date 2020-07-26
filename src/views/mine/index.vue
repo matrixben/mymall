@@ -11,7 +11,7 @@
         <!-- 参考ddbuy的个人主页样式 -->
         <van-cell-group>
           <van-cell value="个人主页" center 
-                    is-link :to="{name:'login'}">
+                    is-link :to="token? {name: 'profile'}:{name:'login'}">
             <template slot="title">
               <!-- 已登录状态 -->
               <div class="personMsg"
@@ -21,8 +21,10 @@
                      alt="头像" />
                 <div class="sex"> </div>
                 <div class="personInfo">
-                  <span class="nickname">用户名</span>
-                  <span>手机号</span>
+                  <span class="nickname">
+                    {{this.$store.state.userInfo.username}}
+                  </span>
+                  <span>{{this.$store.state.userInfo.mobile}}</span>
                 </div>
               </div>
               <!-- 未登录状态 -->
@@ -58,7 +60,7 @@ export default {
     name: 'Mine',
     data () {
       return {
-        token: false,
+        token: typeof(this.$store.state.userInfo.username) === 'string',
         // 头像
         user_image: {
           login_icon: require('@/assets/img/mine/defaultImg.jpeg'),

@@ -95,7 +95,7 @@ app.get('/item/detail/comments/:id', function(req, res){
         'data|20-50': [
             {
                 'id|+1': 100,
-                'userId|3': /\d{3,5}\w{3,5}\-/,
+                'userId|3': /\d{3,5}\w{3,5}-/,
                 'itemId': req.params.id,
                 'itemName': Random.cword(5, 10),
                 'itemSpecId': 'bingan-1001-spec-1',
@@ -194,6 +194,40 @@ app.post('/cart/getitemsfromcart', function(req, res){
         }));
     }
     
+});
+//检查用户名是否已存在
+app.get('/user/userisexist', function(req, res){
+    if (req.query.username === 'jason'){
+        res.json({
+            'status': 200,
+            'errorMsg': null,
+            'data': '用户名已存在'
+        });
+    }else {
+        res.json({
+            'status': 200,
+            'errorMsg': null,
+            'data': null
+        });
+    }
+});
+//新用户注册
+app.post('/user/register', function(req, res){
+    if (req.body.username === 'ben'){
+        res.json({
+            'status': 200,
+            'errorMsg': null,
+            'data': 'my name'
+        });
+    }
+});
+//用户登录
+app.post('/user/login', function(req, res){
+    res.json({
+        'status': 200,
+        'errorMsg': null,
+        'data': 'my name'
+    });
 });
 
 app.listen('8088', () => {

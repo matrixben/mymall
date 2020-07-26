@@ -29,7 +29,13 @@ export const addItemToCart = (userId, cartItem) => myAjax(BASE_URL + 'cart/add',
                                                           {'userId':userId,'ShoppingCartBO':cartItem},
                                                           'POST');
 // 展示购物车中的商品
-export const showItemsInCart = (userId) => myAjax(BASE_URL+ 'cart/getitemsfromcart',{'userId':userId},'POST');
+export const showItemsInCart = (userId) => myAjax(BASE_URL + 'cart/getitemsfromcart',{'userId':userId},'POST');
 
 // 检查用户名是否已存在
-export const usernameIsExist = (username) => myAjax(BASE_URL+ 'user/userisexist',{'username':username},'GET');
+export const usernameIsExist = (username) => myAjax(BASE_URL + 'user/userisexist',{'username':username},'GET');
+
+// 新用户注册
+export const userRegister = (username,password,confirmpw) => myAjax(BASE_URL + 'user/register', {'username':username,'password':password,'confirmpw':confirmpw}, 'POST');
+
+// 用户登录
+export const userLogin = (username,password) => myAjax(BASE_URL + 'user/login', {'username':username,'password':password},'POST');

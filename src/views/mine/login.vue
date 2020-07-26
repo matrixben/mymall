@@ -11,7 +11,7 @@
         <van-form @submit="onSubmit" class="formplace"> 
             <van-field
                 v-model="username"
-                name="用户名"
+                name="username"
                 label="用户名"
                 placeholder="用户名"
                 :rules="[{ required: true, message: '请填写用户名' }]"
@@ -19,7 +19,7 @@
             <van-field
                 v-model="password"
                 type="password"
-                name="密码"
+                name="password"
                 label="密码"
                 placeholder="密码"
                 :rules="[{ required: true, message: '请填写密码' }]"
@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { userLogin } from '@/api/requests';
+
 export default {
     name: 'Login',
     data() {
@@ -49,8 +51,16 @@ export default {
         goToPage(name) {
             this.$router.push({name}).catch(err => {err});
         },
-        onSubmit(values) {
-          console.log('submit', values);
+        async onSubmit(userInfo) {
+            //1.发送登录请求
+            let data = await userLogin(userInfo.username, userInfo.password);
+            //2.保存用户信息到vuex
+            //3.跳转到个人主页
+            if (data){
+                //待解决返回页面未刷新问题
+                this.$store.dispatch('login', data.username);
+                this.goToPage('mine');
+            }
         }
     }
 }

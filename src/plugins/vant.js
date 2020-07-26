@@ -52,6 +52,9 @@ Vue.use(Field);
 import { Form } from 'vant';
 Vue.use(Form);
 
+import { NumberKeyboard } from 'vant';
+Vue.use(NumberKeyboard);
+
 // 商品详情 - 底部按钮
 import { GoodsAction, GoodsActionIcon, GoodsActionButton } from 'vant';
 Vue.use(GoodsAction)
