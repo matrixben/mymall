@@ -6,7 +6,7 @@
           right-text="注册"
           left-arrow
           @click-left="goBack"
-          @click-right="goToPage('register')"
+          @click-right="goToPageWithoutHistory('register')"
         />
         <van-form @submit="onSubmit" class="formplace"> 
             <van-field
@@ -38,11 +38,18 @@ import { userLogin } from '@/api/requests';
 
 export default {
     name: 'Login',
+    inject: ['reload'],
     data() {
         return {
           username: '',
           password: '',
         };
+    },
+    created(){
+        var name = localStorage.getItem("mymall_token");
+        if (typeof name === 'string' && name !== 'undefined'){
+            this.username = localStorage.getItem("mymall_token");
+        }
     },
     methods: {
         goBack() {
@@ -51,15 +58,23 @@ export default {
         goToPage(name) {
             this.$router.push({name}).catch(err => {err});
         },
+        goToPageWithoutHistory(name) {
+            this.$router.replace({name}).catch(err => {err});
+        },
         async onSubmit(userInfo) {
             //1.发送登录请求
+            //登录成功后返回两部分信息：用户简略信息和token加密字符串，前者保存在vue的store，后者保存在localstorage
+            //每次打开主页时使用token请求用户信息
             let data = await userLogin(userInfo.username, userInfo.password);
-            //2.保存用户信息到vuex
-            //3.跳转到个人主页
             if (data){
-                //待解决返回页面未刷新问题
-                this.$store.dispatch('login', data.username);
-                this.goToPage('mine');
+                //2.保存用户信息到vuex
+                this.$store.dispatch('login', data);
+                //3.保存用户信息到localstorage,这里应该保存加密的字符串
+                localStorage.setItem("mymall_token", JSON.stringify(data));
+                //4.刷新页面为最新数据
+                this.reload();
+                //5.跳转到个人主页，不使用push就不会将登录页放入历史记录
+                this.goToPageWithoutHistory('mine');
             }
         }
     }

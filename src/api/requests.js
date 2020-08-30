@@ -1,4 +1,6 @@
 import myAjax from './ajax';
+import qs from 'qs';
+import { POST_HEADERS } from './config';
 
 // 1. 定义基础路径
 const BASE_URL = 'http://localhost:8088/';
@@ -38,4 +40,4 @@ export const usernameIsExist = (username) => myAjax(BASE_URL + 'user/userisexist
 export const userRegister = (username,password,confirmpw) => myAjax(BASE_URL + 'user/register', {'username':username,'password':password,'confirmpw':confirmpw}, 'POST');
 
 // 用户登录
-export const userLogin = (username,password) => myAjax(BASE_URL + 'user/login', {'username':username,'password':password},'POST');
+export const userLogin = (username,password) => myAjax(BASE_URL + 'user/login', qs.stringify({'username':username,'password':password}), 'POST', POST_HEADERS);

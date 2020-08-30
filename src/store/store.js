@@ -8,8 +8,8 @@ export default new Vuex.Store({
         userInfo: {}
     },
     actions: {
-        login(ctx, username){
-            ctx.commit('login', username);
+        login(ctx, data){
+            ctx.commit('login', data);
         },
         changeMobile(ctx, mobile){
             ctx.commit('changeMobile', mobile);
@@ -19,8 +19,13 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        login(state, username){
-            state.userInfo.username = username;
+        login(state, data){
+            state.userInfo.username = data.username;
+            state.userInfo.mobile = data.mobile;
+            state.userInfo.sex = data.sex;
+            state.userInfo.email = data.email;
+            state.userInfo.nickname = data.nickname;
+            
         },
         changeMobile(state, mobile){
             state.userInfo.mobile = mobile;

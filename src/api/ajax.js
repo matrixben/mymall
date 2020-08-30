@@ -1,7 +1,8 @@
 import axios from 'axios';
+//import qs from 'qs';
 import { SUCCESS_CODE } from './config';
 
-export default function myAjax(url = '', params = {}, type = 'GET') {
+export default function myAjax(url = '', params = {}, type = 'GET', headers = {}) {
     let myPromise;
     return new Promise((resolve, reject) => {
         // 判断请求类型
@@ -19,7 +20,8 @@ export default function myAjax(url = '', params = {}, type = 'GET') {
             // 发起get请求
             myPromise = axios.get(url);
         }else if (type.toUpperCase() === 'POST'){
-            myPromise = axios.post(url, params);
+            // 发起post请求
+            myPromise = axios.post(url, params, headers);
         }
         // 处理请求结果并返回
         myPromise.then(res => {

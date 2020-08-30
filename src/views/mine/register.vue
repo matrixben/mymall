@@ -46,6 +46,7 @@ import { userRegister } from '@/api/requests';
 
 export default {
     name: 'Register',
+    inject: ['reload'],
     data() {
         return {
           username: '',
@@ -63,11 +64,15 @@ export default {
         async onSubmit(userInfo) {
             //1.发送注册post请求
             let data = await userRegister(userInfo.username,userInfo.password,userInfo.confirmpw);
-            //2.保存到vuex
-            //3.返回个人中心
             if (data){
-                this.$store.dispatch('login', data.username);
-                this.goToPage('mine');
+                //2.保存用户信息到vuex
+                this.$store.dispatch('login', data);
+                //3.保存用户信息到localstorage,这里应该保存加密的字符串
+                localStorage.setItem("mymall_token", JSON.stringify(data));
+                //4.刷新页面为最新数据
+                this.reload();
+                //5.跳转到个人主页，不使用push就不会将登录页放入历史记录
+                this.$router.replace({path: '/mine'});
             }
         },
         goToPage(name) {

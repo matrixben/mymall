@@ -213,20 +213,32 @@ app.get('/user/userisexist', function(req, res){
 });
 //新用户注册
 app.post('/user/register', function(req, res){
-    if (req.body.username === 'ben'){
-        res.json({
-            'status': 200,
-            'errorMsg': null,
-            'data': 'my name'
-        });
-    }
+    res.json({
+        'status': 200,
+        'errorMsg': null,
+        'data': {
+            'username': 'new one',
+            'nickname': 'justForFun',
+            'mobile': '13800138001',
+            'email': 'email@mail.com',
+            'sex': 1,
+            'birthday': '1970-08-09'
+        }
+    });
 });
 //用户登录
 app.post('/user/login', function(req, res){
     res.json({
         'status': 200,
         'errorMsg': null,
-        'data': 'my name'
+        'data': {
+            'username': 'old me',
+            'nickname': 'justForFun',
+            'mobile': '13800138000',
+            'email': 'email@mail.com',
+            'sex': 1,
+            'birthday': '2020-08-09'
+        }
     });
 });
 

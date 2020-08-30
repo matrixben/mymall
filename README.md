@@ -21,6 +21,7 @@ web前端发展历程
 进阶的方式：重点在提高效率，而不是全而不精
 
 使用样式控制页面跳转后的显示与遮盖
+使用localstorage保存用户token
 ## Project setup
 ```
 npm install

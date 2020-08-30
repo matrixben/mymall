@@ -22,7 +22,7 @@
             </template>
           </van-cell>
           <van-cell title="单元格4" is-link />
-          <van-cell title="单元格5" label="描述" is-link />
+          <van-cell title="单元格5" label="描述随子页面修改而变化" is-link />
         </van-cell-group>
         
         <van-button color="red" hairline plain block @click="logout">退出登录</van-button>
@@ -32,6 +32,7 @@
 <script>
 export default {
     name: 'MySetting',
+    inject: ['reload'],
     data() {
         return {
             one: true,
@@ -45,7 +46,10 @@ export default {
         },
         logout(){
             console.log('quit');
+            localStorage.setItem("mymall_token", this.$store.state.userInfo.username);
             this.$store.dispatch('logout');
+            this.reload();
+            this.goBack();
         }
     }
 }
