@@ -19,6 +19,7 @@
                           :thumb="item.itemImgUrl"
                         >
                           <template #tags>
+                              <!-- 仿淘宝改为使用下拉列表 -->
                             <van-tag plain type="danger">{{item.specName}}</van-tag>
                           </template>
                           <template #footer>
@@ -69,10 +70,28 @@ export default {
     },
     methods: {
         async getCartItems(userId) {
-            const data = await showItemsInCart(userId);
-            if (data){
-                this.cartItems = data;
+            var items = localStorage.getItem("incart");
+            if (items){
+                var selectedItems = JSON.parse(items);
+                for (let i = 0; i < selectedItems.length; i++) {
+                    var selectSpecIdx = selectedItems[i].selectSpec;
+                    this.cartItems[i] = {"itemId": selectedItems[i].itemMain.id,
+                                        "counts": selectedItems[i].count,
+                                        "itemName": selectedItems[i].itemMain.itemName,
+                                        "specName": selectedItems[i].itemSpec[selectSpecIdx].name,
+                                        "priceDiscount": selectedItems[i].itemSpec[selectSpecIdx].priceDiscount,
+                                        "priceNormal": selectedItems[i].itemSpec[selectSpecIdx].priceNormal,
+                                        "itemImgUrl":selectedItems[i].itemImg.url
+                                        };
+                }
+                console.log(this.cartItems);
+            }else {
+                const data = await showItemsInCart(userId);
+                if (data){
+                    this.cartItems = data;
+                }
             }
+            
         },
         calTotPrice: function() {
             let totPrice = 0;

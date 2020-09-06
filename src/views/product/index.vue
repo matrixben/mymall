@@ -99,60 +99,89 @@ export default {
             itemSpecs: [],
             defaultItemSpecs: {},
             selectNum: 0,
-            skuItemData: {},
+            itemForCart: {},
+            itemsForCart: [],
             cartNum: 0,
             itemComments: [],
             tabTitle: ''
         };
     },
     created() {
-        getProductDetail(this.$route.params.id).then(data => {
-            // this.productDetail = data;
-            this.productImgs = data.itemImgs;
-            this.itemMain = data.item;
-            this.itemParam = data.itemParam;
-            this.itemSpecs = data.itemSpecs;
-            this.defaultItemSpecs = this.itemSpecs[this.defaultNum];
-        });
+      //打开页面时加载购物车信息
+      this.itemsForCart = this.getInCart();
+      this.cartNum = this.itemsForCart.length;
+      getProductDetail(this.$route.params.id).then(data => {
+          // this.productDetail = data;
+          this.productImgs = data.itemImgs;
+          this.itemMain = data.item;
+          this.itemParam = data.itemParam;
+          this.itemSpecs = data.itemSpecs;
+          this.defaultItemSpecs = this.itemSpecs[this.defaultNum];
+          this.itemForCart = {"itemMain": data.item,"itemImg": data.itemImgs[0],"itemSpec": data.itemSpecs,"selectSpec": 0,"count": 0};
+      });
     },
     watch: {
-        // 商品规格和用户评论的长度不一样，会影响滚动条的长度，改变其中的值以动态修改长度
-        tabTitle() {
-            this.itemComments = ['nothing'];
-        }
+      // 商品规格和用户评论的长度不一样，会影响滚动条的长度，改变其中的值以动态修改长度
+      tabTitle() {
+          this.itemComments = ['nothing'];
+      }
     },
     methods: {
-        onSpecType(id, index) {
-            this.selectNum = index;
-            for (let s of this.itemSpecs) {
-                if (s.id === id){
-                    this.defaultItemSpecs = s;
-                }
-            }
-        },
-        onUserComments(name,title) {
-            this.tabTitle = title;
-            if (title === '用户评价'){
-                this._getComments();
-            }
-            
-        },
-        async _getComments() {
-            const data = await getUserComments(this.itemMain.id);
-            if (data){
-                console.log(data);
-                this.itemComments = data;
-            }
-        },
-        addCart() {
-          // 判断是否重复商品
-          // 使用vuex?
-          this.cartNum++;
-          Toast('添加成功！');
-        },
-        onBuyClicked() {
-          Toast('买买买！');
+      getInCart(){
+        var cartStr = localStorage.getItem("incart");
+        if (cartStr){
+          return JSON.parse(cartStr);
+        }else {
+          return [];
         }
+      },
+      onSpecType(id, index) {
+          this.selectNum = index;
+          for (let s of this.itemSpecs) {
+              if (s.id === id){
+                  this.defaultItemSpecs = s;
+              }
+          }
+      },
+      onUserComments(name,title) {
+          this.tabTitle = title;
+          if (title === '用户评价'){
+              this._getComments();
+          }
+          
+      },
+      async _getComments() {
+          const data = await getUserComments(this.itemMain.id);
+          if (data){
+              this.itemComments = data;
+          }
+      },
+      addCart() {
+        // 判断是否重复商品
+        var isContains = -1;
+        for (let i = 0; i < this.itemsForCart.length; i++) {
+          console.log(this.itemsForCart[i].itemSpec[this.itemsForCart[i].selectSpec].id);
+          console.log(this.itemSpecs[this.selectNum].id);
+          if (this.itemsForCart[i].itemMain.id === this.itemMain.id 
+          && this.itemsForCart[i].itemSpec[this.itemsForCart[i].selectSpec].id === this.itemSpecs[this.selectNum].id) {
+            isContains = i;
+          }
+        }
+        if (isContains > -1) {
+          this.itemsForCart[isContains].count += 1;
+        } else {
+          this.cartNum += 1;
+          this.itemForCart = {"itemMain": this.itemMain,"itemImg": this.productImgs[0],"itemSpec": this.itemSpecs,"selectSpec": this.selectNum,"count": 1};
+          // this.itemForCart.selectSpec = this.selectNum;
+          // this.itemForCart.count = 1;
+          this.itemsForCart.unshift(this.itemForCart);
+        }
+        localStorage.setItem("incart",JSON.stringify(this.itemsForCart));
+        Toast('添加成功！！！');
+      },
+      onBuyClicked() {
+        Toast('买买买！');
+      }
     }
 }
 </script>
