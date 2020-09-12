@@ -160,8 +160,6 @@ export default {
         // 判断是否重复商品
         var isContains = -1;
         for (let i = 0; i < this.itemsForCart.length; i++) {
-          console.log(this.itemsForCart[i].itemSpec[this.itemsForCart[i].selectSpec].id);
-          console.log(this.itemSpecs[this.selectNum].id);
           if (this.itemsForCart[i].itemMain.id === this.itemMain.id 
           && this.itemsForCart[i].itemSpec[this.itemsForCart[i].selectSpec].id === this.itemSpecs[this.selectNum].id) {
             isContains = i;
@@ -172,8 +170,6 @@ export default {
         } else {
           this.cartNum += 1;
           this.itemForCart = {"itemMain": this.itemMain,"itemImg": this.productImgs[0],"itemSpec": this.itemSpecs,"selectSpec": this.selectNum,"count": 1};
-          // this.itemForCart.selectSpec = this.selectNum;
-          // this.itemForCart.count = 1;
           this.itemsForCart.unshift(this.itemForCart);
         }
         localStorage.setItem("incart",JSON.stringify(this.itemsForCart));

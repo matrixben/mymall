@@ -23,7 +23,7 @@
                             <van-tag plain type="danger">{{item.specName}}</van-tag>
                           </template>
                           <template #footer>
-                            <van-stepper v-model="item.counts" @change="calTotPrice" />
+                            <van-stepper v-model="item.counts" @change="changeCount(index)" disable-input/>
                           </template>
                         </van-card>
                     </li>
@@ -60,6 +60,7 @@ export default {
     },
     data() {
         return {
+            itemsForCart: [],
             cartItems: [],
             checkresult: [],
             isAllChecked: false
@@ -69,22 +70,28 @@ export default {
         this.getCartItems('jason001');
     },
     methods: {
+        getInCart(){
+        var cartStr = localStorage.getItem("incart");
+        if (cartStr){
+          return JSON.parse(cartStr);
+        }else {
+          return [];
+        }
+      },
         async getCartItems(userId) {
-            var items = localStorage.getItem("incart");
-            if (items){
-                var selectedItems = JSON.parse(items);
-                for (let i = 0; i < selectedItems.length; i++) {
-                    var selectSpecIdx = selectedItems[i].selectSpec;
-                    this.cartItems[i] = {"itemId": selectedItems[i].itemMain.id,
-                                        "counts": selectedItems[i].count,
-                                        "itemName": selectedItems[i].itemMain.itemName,
-                                        "specName": selectedItems[i].itemSpec[selectSpecIdx].name,
-                                        "priceDiscount": selectedItems[i].itemSpec[selectSpecIdx].priceDiscount,
-                                        "priceNormal": selectedItems[i].itemSpec[selectSpecIdx].priceNormal,
-                                        "itemImgUrl":selectedItems[i].itemImg.url
+            this.itemsForCart = this.getInCart();
+            if (this.itemsForCart.length > 0){
+                for (let i = 0; i < this.itemsForCart.length; i++) {
+                    var selectSpecIdx = this.itemsForCart[i].selectSpec;
+                    this.cartItems[i] = {"itemId": this.itemsForCart[i].itemMain.id,
+                                        "counts": this.itemsForCart[i].count,
+                                        "itemName": this.itemsForCart[i].itemMain.itemName,
+                                        "specName": this.itemsForCart[i].itemSpec[selectSpecIdx].name,
+                                        "priceDiscount": this.itemsForCart[i].itemSpec[selectSpecIdx].priceDiscount,
+                                        "priceNormal": this.itemsForCart[i].itemSpec[selectSpecIdx].priceNormal,
+                                        "itemImgUrl":this.itemsForCart[i].itemImg.url
                                         };
                 }
-                console.log(this.cartItems);
             }else {
                 const data = await showItemsInCart(userId);
                 if (data){
@@ -110,6 +117,12 @@ export default {
         },
         checkAll(ac){
             this.$refs.checkboxGroup.toggleAll(ac);
+        },
+        changeCount(index){
+            //为了触发视图更新
+            this.$set(this.cartItems, index, this.cartItems[index]);
+            this.itemsForCart[index].count = this.cartItems[index].counts;
+            localStorage.setItem("incart",JSON.stringify(this.itemsForCart));
         },
         onBuyClicked(){}
     }
